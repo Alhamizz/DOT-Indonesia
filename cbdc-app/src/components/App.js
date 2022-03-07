@@ -219,6 +219,56 @@ class App extends Component {
     
   }
 }
+
+async concatX(stringA, stringB){
+  if(this.state.dApps!=='undefined'){
+    
+    try{       
+      let resultX = stringA.concat(stringB);
+      this.setState({resultX : resultX})
+ 
+    } catch (e) {
+      console.log('Error', e)
+    }
+  }
+}
+
+async concatY(stringC, numberD){
+  if(this.state.dApps!=='undefined'){
+    
+    try{       
+      let resultY = stringC + numberD;
+      this.setState({resultY : resultY})
+ 
+    } catch (e) {
+      console.log('Error', e)
+    }
+  }
+}
+
+async concatZ(){
+
+  if(this.state.dApps!=='undefined'){
+   
+    try{
+      function Item(string1, string2, string3) {
+        this.string1 = string1;
+        this.string2 = string2;
+        this.string3 = string3;
+      }
+      var Items = [
+        new Item('Aku','makan','nasi'),
+        new Item('Dia','makan','sayur')
+    ];
+
+    let resultZ = Items;
+    this.setState({resultZ : resultZ})
+
+    } catch (e) {
+      console.log('Error', e)
+    } 
+  }
+}
  
   constructor(props) {
     super(props)
@@ -230,6 +280,10 @@ class App extends Component {
       Source: [],
       To: [],
       Amount: [],
+      stringA: '',
+      stringB: '',
+      stringC: '',
+      numberD: '',
       web3: 'undefined',
       account: '',
       token: null,
@@ -411,7 +465,7 @@ class App extends Component {
                             </div>
                           </Tab>
 
-                          <Tab eventKey="member" title="Member">
+                          <Tab eventKey="member" title="Member dan concat struct">
                            <div>
 
                             <br></br> 
@@ -515,6 +569,115 @@ class App extends Component {
                                 </form>
                                 
                              </div>
+                          </Tab>
+
+                          <Tab eventKey="Concat String dan String" title="Concat String dan String">
+                            <div>
+                              <br></br>
+
+                            Input String A dan String B?
+                              <br></br>
+                              <form onSubmit={(e) => {
+                                e.preventDefault()
+                                let stringA = this.stringA.value
+                                let stringB = this.stringB.value
+                                
+                                this.concatX(stringA, stringB)
+                               
+                              }}>
+                                <div className='form-group mr-sm-2'>
+
+                                  <br></br>
+                                  <br></br>
+
+                                  <label htmlFor="StringA" style={{float: "left"}}>StringA:</label>
+                                  <input
+                                    id='stringA'
+                                    type='next'
+                                    ref={(input) => { this.stringA = input }}
+                                    className="form-control form-control-md"
+                                    placeholder='StringA..'
+                                    required />
+
+                                  <label htmlFor="StringB" style={{float: "left"}}>StringB:</label>
+                                  <input
+                                    id='stringB'
+                                    type='text'
+                                    ref={(input) => { this.stringB = input }}
+                                    className="form-control form-control-md"
+                                    placeholder='StringB..'
+                                    required />
+
+                                </div>
+                                <button type='submit' className='btn btn-primary'>Concat String dan String</button>
+                              </form>
+
+                              <div>
+                                <br></br>
+                                <p style={{float: "left"}}>
+                                  Result : {this.state.resultX}
+                                </p>                                                 
+                              </div>
+
+                            </div>
+                          </Tab>
+
+                          <Tab eventKey="Concat String dan Number" title="Concat String dan Number">
+                            <div>
+                              <br></br>
+
+                            Input String C dan Number D?
+                              <br></br>
+                              <form onSubmit={(e) => {
+                                e.preventDefault()
+                                let stringC = this.stringC.value
+                                let numberD = this.numberD.value
+                                
+                                this.concatY(stringC, numberD)
+                               
+                              }}>
+                                <div className='form-group mr-sm-2'>
+
+                                  <br></br>
+                                  <br></br>
+
+                                  <label htmlFor="StringC" style={{float: "left"}}>StringC:</label>
+                                  <input
+                                    id='stringC'
+                                    type='text'
+                                    ref={(input) => { this.stringC = input }}
+                                    className="form-control form-control-md"
+                                    placeholder='StringC..'
+                                    required />
+
+                                  <label htmlFor="NumberD" style={{float: "left"}}>NumberD:</label>
+                                  <input
+                                    id='NumberD'
+                                    type='number'
+                                    ref={(input) => { this.numberD = input }}
+                                    className="form-control form-control-md"
+                                    placeholder='NumberD..'
+                                    required />
+
+                                </div>
+                                <button type='submit' className='btn btn-primary'>Concat String dan Number</button>
+                              </form>
+
+                              <div>
+                                <br></br>
+                                <p style={{float: "left"}}>
+                                  Result : {this.state.resultY}
+                                </p>                                                 
+                              </div>
+
+                              <div>
+                                <br></br>
+                                <p style={{float: "left"}}>
+                                  Result : {this.state.resultZ}
+                                </p>                                                 
+                               </div>
+
+                            </div>
                           </Tab>
 
                         </Tabs>
