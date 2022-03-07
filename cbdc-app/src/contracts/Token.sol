@@ -21,7 +21,7 @@ contract Token is ERC20 {
     emit MinterChanged(msg.sender, dapps);
     return true;
   }
-  //Add pass minter role function
+  //Add pass minter role functionA
 
   function mint(address account, uint256 amount) public {
     //check if msg.sender have minter role
