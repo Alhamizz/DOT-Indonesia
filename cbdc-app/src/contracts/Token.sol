@@ -10,7 +10,7 @@ contract Token is ERC20 {
   //add minter changed event
   event MinterChanged(address indexed from, address to);
 
-  constructor() payable ERC20("Central Bank Digital Currency", "CBDC") {
+  constructor() payable ERC20("TestA", "A") {
     //asign initial minter
     minter = msg.sender;
   }

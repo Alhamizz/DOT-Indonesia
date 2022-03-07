@@ -15,8 +15,6 @@ class App extends Component {
     await this.loadTokenName()   
     await this.distributedTokens()
     await this.loadmemberslength()
-    await this.loadtrackslength()
-    await this.loadcentralbankrole()
 
     document.title = "Uang Digital Berbasis Blockchain"
   }
@@ -37,8 +35,6 @@ class App extends Component {
             this.setState({account: accounts[0], balance: balance})
             this.loadTokenName()
             this.loadmemberslength()
-            this.loadtrackslength()
-            this.loadcentralbankrole()
             
           } else {
             window.alert('Please login with MetaMask')
@@ -133,7 +129,6 @@ class App extends Component {
 
   async transfer(to, amount){
     if(this.state.dApps!=='undefined'){
-      if(this.state.account === this.state.a3 || this.state.account === this.state.b3 || this.state.account === this.state.c3){
         try{
           await this.state.dApps.methods.transfer(to, amount.toString()).send({from: this.state.account})
           .on('transactionHash', (hash) => {
@@ -149,7 +144,7 @@ class App extends Component {
         }
       }
 
-    }
+    
   }
 
   async redemption(amount){
@@ -171,39 +166,6 @@ class App extends Component {
     }
   }
 
-  async passCentralBankRole(newCB){
-    if(this.state.dApps!=='undefined'){
-      
-      try{
-        
-        await this.state.dApps.methods.passCentralBankRole(newCB).send({from: this.state.account})
-        .on('transactionHash', (hash) => {
-          var answer = window.confirm("Redirect to etherscan?")
-          if (answer){
-            // similar behavior as an HTTP redirect
-            window.open("https://ropsten.etherscan.io/tx/" + hash);
-         
-          }
-          
-        })
-      } catch (e) {
-        console.log('Error, Request cant be canceleld: ', e)
-      }
-    }
-  }
-
-  async loadcentralbankrole(){
-    if(this.state.dApps!=='undefined'){
-      try{
-        const centralbankrole = await this.state.dApps.methods.ShowCentralBankRole().call()
-        this.setState({centralbankrole: centralbankrole})
-      }
-      catch (e) {
-        console.log('Error, central bank role: ', e)
-      } 
-    }
-  }
-
   async addmember(name, gender, address){
     if(this.state.dApps!=='undefined'){
       
@@ -222,27 +184,6 @@ class App extends Component {
     }
   }
   
-  async addtrack(source, to, amount2){
-    if(this.state.dApps!=='undefined'){
-      
-      try{
-        
-        await this.state.dApps.methods.AddTrack(source, to, amount2.toString()).send({from: this.state.account})
-        .on('transactionHash', (hash) => {
-          var answer = window.confirm("Redirect to etherscan?")
-          if (answer){
-            // similar behavior as an HTTP redirect
-            window.open("https://ropsten.etherscan.io/tx/" + hash);
-         
-          }
-          
-        })
-      } catch (e) {
-        console.log('Error, Tracking: ', e)
-      }
-    }
-  }
-
   async loadmemberslength(){
     if(this.state.dApps!=='undefined'){
       try{
@@ -255,22 +196,9 @@ class App extends Component {
     }
   }
 
-  async loadtrackslength(){
-    if(this.state.dApps!=='undefined'){
-      try{
-        const trackslength = await this.state.dApps.methods.TrackLength().call()
-        this.setState({trackslength: trackslength})
-      }
-      catch (e) {
-        console.log('Error, load tracks length: ', e)
-      } 
-    }
-  }
-
   async loadmembers(){
 
     if(this.state.dApps!=='undefined'){
-      if(this.state.account === this.state.centralbankrole ){
      
       try{
         var member =  await this.state.dApps.methods.ShowMembers().call()
@@ -285,127 +213,12 @@ class App extends Component {
            
          this.setState({Name : Name, Gender : Gender, Address : Address})
         }
-
-/*        const a1 = member[0].Name;
-        const a2 = member[0].Gender;
-        const a3 = member[0].Address;
-          
-        const b1 = member[1].Name;
-        const b2 = member[1].Gender;
-        const b3 = member[1].Address;
-          
-        const c1 = member[2].Name;
-        const c2 = member[2].Gender;
-        const c3 = member[2].Address;
-
-        this.setState({a1 : a1, a2 : a2, a3 : a3})
-        this.setState({b1 : b1, b2 : b2, b3 : b3})
-        this.setState({c1 : c1, c2 : c2, c3 : c3})
-
-        console.log(this.state.memberslength)
-
-        <h5 style={{float: "left"}}>{}</h5>
-                                  <table className="table table-bordered">
-                                    <thead className="thead-dark">
-                                      <tr>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Gender</th>
-                                        <th scope="col">Address</th>
-                                      </tr>
-                                      
-                                      <tr>
-                                        <th scope="col">{this.state.Name[0]}</th>
-                                        <th scope="col">{this.state.Gender[0]}</th>
-                                        <th scope="col">{this.state.Address[0]}</th>
-                                      </tr>
-
-                                      <tr>
-                                        <th scope="col">{this.state.Name[1]}</th>
-                                        <th scope="col">{this.state.Gender[1]}</th>
-                                        <th scope="col">{this.state.Address[1]}</th>
-                                      </tr>
-
-                                      <tr>
-                                        <th scope="col">{this.state.Name[2]}</th>
-                                        <th scope="col">{this.state.Gender[2]}</th>
-                                        <th scope="col">{this.state.Address[2]}</th>
-                                      </tr>
-                                    
-                                     
-                                                                       
-                                    </thead>
-                                    </table>
-*/
       } catch (e) {
         console.log('Error, Show Members: ', e)
       }
-    }
+    
   }
 }
-
-
-  async loadtracks(){
-
-    if(this.state.dApps!=='undefined'){
-      if(this.state.centralbankrole === this.state.account){
-      
-      try{
-        const track =  await this.state.dApps.methods.Tracking().call()
-        var Source = [];
-        var To = [];
-        var Amount = [];
-
-        for (var i = 0; i < this.state.trackslength; i++){
-          Source[i] = track[i].Source;
-          To[i] = track[i].To;  
-          Amount[i] = track[i].Amount; 
-           
-        this.setState({Source : Source, To : To, Amount : Amount})
-        }
-
-/*        const a11 = track[0].Source;
-        const a22 = track[0].To;
-        const a33 = track[0].Amount;
-          
-        const b11 = track[1].Source;
-        const b22 = track[1].To;
-        const b33 = track[1].Amount;
-          
-        const c11 = track[2].Source;
-        const c22 = track[2].To;
-        const c33 = track[2].Amount;
-    
-        this.setState({a11 : a11, a22 : a22, a33 : a33})
-        this.setState({b11 : b11, b22 : b22, b33 : b33})
-        this.setState({c11 : c11, c22 : c22, c33 : c33})
-*/
-      } catch (e) {
-        console.log('Error, Tracking: ', e)
-      }
-    }
-  }
-}
-    
-/*async createTable()
-{
-var rn = this.state.memberslength;
-
- for(var i=0;i<rn;i++){
-   var row = <tr>
-     <td>${member[1].Name}</td>
-     <td>${member[1].Name}</td>
-     <td>a</td>
-   </tr>
-   table.innerHTML += row
-   }
-}*/
-
-    
-   //   const tempMember = new this.state.web3.eth.Contract(Member.abi, member)
-   //   const name = await tempMember.methods.name().call()
-   //   members.push({member: tempMember, name: name, address: member, id: i})
-   //   this.setState({members: members, memberslength: length})
-
  
   constructor(props) {
     super(props)
@@ -452,59 +265,9 @@ var rn = this.state.memberslength;
                       <div className="content mr-auto ml-auto">
                         <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example" >
 
-                          <Tab eventKey="SetTokenIssuer" title="Set Token Issuer">
-                           <div>
-                            <br></br>
-                            <p style={{float: "left"}}>
-                              Central Bank Role : {this.state.centralbankrole}
-                            </p>  
-                              <br></br> 
-
-                              <br></br>
-                              Change Issuer
-                              <br></br>
-                              
-                              <form onSubmit={(e) => {
-                                  e.preventDefault()
-                                  let to = this.TokenIssuer.value
-                                  this.passCentralBankRole(to)
-                                }}>
-                                  
-                                  <div className='form-group mr-sm-2'>
-                                  <br></br>
-                                    <label htmlFor="TokenIssuer" style={{float: "left"}}>Token Issuer:</label>
-                                    <input
-                                      id='TokenIssuer'
-                                      type='text'
-                                      ref={(input) => { this.TokenIssuer = input }}
-                                      className="form-control form-control-md"
-                                      placeholder='to...'
-                                      required />
-                  
-                                  </div>
-                                  <button type='submit' className='btn btn-primary'>Set</button>
-                                </form>
-                                
-                             </div>
-                          </Tab>
-                            <Tab eventKey="supply" title="Total Supply">
-                              <div>
-
-                              <br></br>
-                              <p style={{float: "left"}}>
-                                Token Supply of {this.state.tokenName}: {this.state.TokenSupply}
-                              </p>                                               
-                                
-                              </div>
-                            </Tab>
-
                           <Tab eventKey="issuance" title="Issuance">
                             <div>
                               <br></br>
-                              <p style={{float: "left"}}>
-                                Central Bank Role : {this.state.centralbankrole}
-                              </p>  
-                              <br></br> 
 
                             <br></br>
                               How much issuance?
@@ -563,14 +326,11 @@ var rn = this.state.memberslength;
 
                               <form onSubmit={(e) => {
                                 e.preventDefault()
-                                let source = this.state.account
                                 let amount = this.TransferAmount.value
-                                let amount2 = this.TransferAmount.value
                                 let to = this.Transferaddress.value
                                 amount = amount * 10**18 //convert to wei
                                
                                 this.transfer(to,amount)
-                                this.addtrack(source,to,amount2)
   
                               }}>
                                 <div className='form-group mr-sm-2'>
@@ -611,10 +371,7 @@ var rn = this.state.memberslength;
                           <Tab eventKey="redemption" title="Redemption">
                             <div>
                               <br></br>
-                              <p style={{float: "left"}}>
-                                Central Bank Role : {this.state.centralbankrole}
-                              </p>  
-                              <br></br> 
+
                             <br></br>
                             How much redemption?
                               <br></br>
@@ -656,10 +413,7 @@ var rn = this.state.memberslength;
 
                           <Tab eventKey="member" title="Member">
                            <div>
-                            <br></br>
-                              <p style={{float: "left"}}>
-                                Central Bank Role : {this.state.centralbankrole}
-                              </p>  
+
                             <br></br> 
 
                              <br></br>
@@ -758,67 +512,6 @@ var rn = this.state.memberslength;
                                 }}>
                                                                  
                                   <button type='submit' className='btn btn-primary'>Show</button>
-                                </form>
-                                
-                             </div>
-                          </Tab>
-
-                          <Tab eventKey="track" title="Track">
-                           <div>
-                            <br></br>
-                              <p style={{float: "left"}}>
-                                Central Bank Role : {this.state.centralbankrole}
-                              </p>  
-                            <br></br> 
-                                <br></br> 
-                                Show Track
-                                <br></br> 
-                                <br></br>                            
-                            
-                                <div>
-                                  
-                                <h5 style={{float: "left"}}>{}</h5>
-                                  <table className="table table-bordered">
-                                    <thead>
-                                      <tr>
-                                        <th>From(Address)</th>
-                                        <th>To(Address)</th>
-                                        <th>Amount(CBDC)</th>
-                                      </tr>
-                                    </thead>
-
-                                    <tbody>
-                                      
-                                      <th>
-                                         {this.state.Source.map(item => (
-                                          <tr key={item}>{item}</tr>
-                                         ))}
-                                      </th>
-
-                                      <th>
-                                         {this.state.To.map(item => (
-                                          <tr key={item}>{item}</tr>
-                                         ))}
-                                      </th>
-
-                                      <th>
-                                         {this.state.Amount.map(item => (
-                                          <tr key={item}>{item}</tr>
-                                         ))}
-                                      </th>
-         
-                                    </tbody>                                   
-                                    
-                                    </table>
-                                  </div>
-                                 
-                                <form onSubmit={(e) => {
-                                  e.preventDefault()
-                                  this.loadtracks()
-                                  
-                                }}>
-                                                                 
-                                  <button type='submit' className='btn btn-primary'>Track</button>
                                 </form>
                                 
                              </div>
